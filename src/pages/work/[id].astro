@@ -2,8 +2,40 @@
 import {getCollection,render,type CollectionEntry} from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Button from '@/components/Button.astro';
-export async function getStaticPaths(){const entries=await getCollection('work',({data})=>!data.draft);return entries.map(entry=>({params:{id:entry.id},props:{entry}}))}
-interface Props{entry:CollectionEntry<'work'>}
-const {entry}=Astro.props;const {title,summary,role,tags,url,repo,cover}=entry.data;const {Content}=await render(entry);
+export async function getStaticPaths(){
+ const entries=await getCollection('work',({data})=>!data.draft);
+ const zh=await getCollection('workZh');
+ return entries.map(entry=>({params:{id:entry.id},props:{entry,zhEntry:zh.find(x=>x.id===entry.id)}}));
+}
+interface Props{entry:CollectionEntry<'work'>;zhEntry?:CollectionEntry<'workZh'>}
+const {entry,zhEntry}=Astro.props;
+const {title,summary,role,tags,url,repo,cover}=entry.data;
+const english=await render(entry);
+const chinese=zhEntry?await render(zhEntry):null;
+const EnContent=english.Content;
+const ZhContent=chinese?.Content;
+const translation:Record<string,{summary:string,role:string}>={
+ 'flipo-flip':{summary:'结合实验、几何建模与仿真研究非对称翻滚动力学。',role:'研究与仿真'},
+ 'cumcm-2026':{summary:'利用有限体积法研究多孔介质干燥的热质耦合传输。',role:'数学建模与数值计算'},
+ 'xv6-oslabs':{summary:'基于 xv6-riscv 的操作系统实验与学习笔记。',role:'操作系统实验'}
+};
+const zh=translation[entry.id];
 ---
-<BaseLayout title={title} description={summary}><article class="mx-auto max-w-3xl px-6 pt-16 pb-24 sm:pt-24"><a href="/work" class="text-ink-soft font-mono text-xs hover:text-signal">← All work</a><h1 class="font-display text-ink mt-6 max-w-2xl text-3xl font-medium sm:text-4xl">{title}</h1><p class="text-ink-soft mt-4">{summary}</p>{cover && <img src={cover} alt={title+' project illustration'} class="bg-surface mt-8 w-full max-h-[440px] rounded-lg object-contain" loading="lazy"/>}<dl class="border-line text-ink-soft mt-6 flex flex-wrap gap-x-8 gap-y-2 border-y py-4 font-mono text-xs"><div><dt class="inline">Role — </dt><dd class="inline">{role}</dd></div><div><dt class="inline">Stack — </dt><dd class="inline">{tags.join(', ')}</dd></div></dl><div class="prose prose-sm sm:prose-base mt-10 max-w-2xl"><Content/></div><div class="mt-10 flex flex-wrap gap-3">{url && <Button href={url}>Visit ↗</Button>}{repo && <Button href={repo} variant="ghost">View source ↗</Button>}</div></article></BaseLayout>
+<BaseLayout title={title} description={summary}>
+ <article class="mx-auto max-w-3xl px-6 pt-16 pb-24 sm:pt-24">
+  <a href="/work" class="text-ink-soft hover:text-signal font-mono text-xs"><span data-zh="← 返回项目列表">← All work</span></a>
+  <h1 class="font-display text-ink mt-6 max-w-2xl text-3xl font-medium sm:text-4xl">{title}</h1>
+  <p class="text-ink-soft mt-4" data-zh={zh?.summary||summary}>{summary}</p>
+  {cover && <img src={cover} alt={title+' project illustration'} class="bg-surface mt-8 w-full max-h-[520px] rounded-lg object-contain" loading="eager" />}
+  <dl class="border-line text-ink-soft mt-6 flex flex-wrap gap-x-8 gap-y-2 border-y py-4 font-mono text-xs">
+   <div><dt class="inline" data-zh="领域 — ">Focus — </dt><dd class="inline" data-zh={zh?.role||role}>{role}</dd></div>
+   <div><dt class="inline" data-zh="技术 — ">Stack — </dt><dd class="inline">{tags.join(', ')}</dd></div>
+  </dl>
+  <div class="prose prose-sm sm:prose-base mt-10 max-w-2xl" data-content-lang="en"><EnContent/></div>
+  {ZhContent && <div class="prose prose-sm sm:prose-base mt-10 max-w-2xl" data-content-lang="zh"><ZhContent/></div>}
+  <div class="mt-10 flex flex-wrap gap-3">
+   {url && <Button href={url}><span data-zh="访问项目 ↗">Visit ↗</span></Button>}
+   {repo && <Button href={repo} variant="ghost"><span data-zh="查看源码 ↗">View source ↗</span></Button>}
+  </div>
+ </article>
+</BaseLayout>

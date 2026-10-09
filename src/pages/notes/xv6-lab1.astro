@@ -1,0 +1,25 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+---
+<BaseLayout title="xv6 · Unix utilities">
+ <article class="mx-auto max-w-3xl px-6 pt-16 pb-24 sm:pt-24">
+  <a class="text-ink-soft font-mono text-xs" href="/work/xv6-oslabs/"><span data-zh="← 返回 xv6 项目">← xv6 OS Labs</span></a>
+  <h1 class="font-display text-ink mt-6 text-3xl sm:text-4xl">xv6 · Unix utilities</h1>
+  <p class="text-ink-soft mt-4 font-mono text-sm">Lab 1 · C · xv6-riscv</p>
+  <div class="prose mt-10 max-w-2xl" data-content-lang="en">
+   <h2>Process communication</h2>
+   <p>The <code>pingpong</code> implementation creates two pipes: one for the parent-to-child message and one for the reply. After <code>fork</code>, each process closes the unused ends. The parent waits for the child before exiting.</p>
+   <h2>System calls and filesystem traversal</h2>
+   <p><code>sleep</code> converts its command-line argument to timer ticks and passes it to the system call. <code>find</code> uses <code>open</code>, <code>fstat</code>, and directory entries to traverse subdirectories recursively while skipping <code>.</code> and <code>..</code>.</p>
+   <p><a href="https://github.com/Kang-Zhaoyuan/xv6-oslabs-hitsz/tree/util/user">View source files ↗</a></p>
+  </div>
+  <div class="prose mt-10 max-w-2xl" data-content-lang="zh">
+   <h2>进程间通信</h2>
+   <p><code>pingpong</code> 创建两个管道，分别用于父进程向子进程发送消息、子进程向父进程回复。调用 <code>fork</code> 后，双方关闭不使用的管道端口，父进程等待子进程结束。</p>
+   <h2>系统调用与文件系统遍历</h2>
+   <p><code>sleep</code> 将命令行参数转为时钟 tick，并调用系统接口。<code>find</code> 使用 <code>open</code>、<code>fstat</code> 及目录项递归遍历子目录，跳过 <code>.</code> 和 <code>..</code>。</p>
+   <p><a href="https://github.com/Kang-Zhaoyuan/xv6-oslabs-hitsz/tree/util/user">查看源文件 ↗</a></p>
+  </div>
+ </article>
+</BaseLayout>
