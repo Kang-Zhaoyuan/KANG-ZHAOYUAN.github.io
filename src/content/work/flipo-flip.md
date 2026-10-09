@@ -8,6 +8,8 @@ cover: /media/flipo-poster.png
 repo: https://github.com/Kang-Zhaoyuan/Flipo_Flip
 featured: true
 ---
+[IYPT 2026 · Problem 6 — Flipo Flip](https://iypt.org/problems/iypt-2026-problems/)
+
 ## Overview
 Flipo Flip explores the motion and energy dissipation of an asymmetric rolling object. The work combines physical experiments, video tracking, geometric analysis, dynamical simulation, and comparisons with theoretical models.
 

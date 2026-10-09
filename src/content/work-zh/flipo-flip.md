@@ -1,3 +1,5 @@
+[IYPT 2026 · 第 6 题：Flipo Flip](https://iypt.org/problems/iypt-2026-problems/)
+
 # 项目简介
 
 Flipo Flip 研究非对称物体的翻滚运动与能量损耗，结合物理实验、视频追踪、几何分析、动力学仿真及理论模型交叉验证。
