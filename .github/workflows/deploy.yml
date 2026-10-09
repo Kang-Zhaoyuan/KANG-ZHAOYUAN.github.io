@@ -23,6 +23,13 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Fetch original Flipo simulation GIF
+        run: |
+          mkdir -p public/media
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/Kang-Zhaoyuan/Flipo_Flip/main/03_%E7%AD%94%E8%BE%A9%E4%B8%8E%E6%B1%87%E6%8A%A5/v2_%E7%AD%94%E8%BE%A9%E4%B8%8E%E6%B1%87%E6%8A%A5/References_On_PPT_Making/Simulation/GIF3_GroupA_omega0_15.0rads_success810deg_0.4x_smooth.gif" \
+            -o public/media/flipo-simulation.gif
+          test "$(wc -c < public/media/flipo-simulation.gif)" -gt 1000000
       - run: pnpm build
       - uses: actions/upload-pages-artifact@v3
         with:
