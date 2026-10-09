@@ -1,41 +1,8 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { formatDate } from '@/utils/formatDate';
-
-interface Props {
-  entry: CollectionEntry<'work'>;
-}
-
-const { entry } = Astro.props;
-const { title, summary, date, tags } = entry.data;
-
-const stamp = formatDate(date, 'compact');
+import type {CollectionEntry} from 'astro:content';
+interface Props {entry:CollectionEntry<'work'>}
+const {entry}=Astro.props;
+const {title,summary,tags,cover}=entry.data;
+const names:{[key:string]:string}={'flipo-flip':'研究非对称翻滚动力学：实验、几何建模与动力学仿真。','cumcm-2026':'多孔介质干燥的热质耦合建模、有限体积求解与验证。','cpu-design':'基于 Verilog 的 miniRV CPU 与 FPGA 开发。','xv6-oslabs':'基于 xv6-riscv 的 Unix 实用程序和进程实验。'};
 ---
-
-<a
-  href={`/work/${entry.id}`}
-  class="group border-line hover:border-signal grid grid-cols-[3.5rem_1fr_auto] items-center gap-4 border-b py-5 transition-colors sm:grid-cols-[4.5rem_1fr_auto] sm:gap-6"
->
-  <span class="text-ink-soft font-mono text-xs">{stamp}</span>
-
-  <span class="min-w-0">
-    <span
-      class="font-display text-ink group-hover:text-signal block truncate text-lg transition-colors"
-    >
-      {title}
-    </span>
-    <span class="text-ink-soft hidden truncate text-sm sm:block">{summary}</span>
-  </span>
-
-  <span class="flex items-center gap-4">
-    <span class="text-ink-soft hidden font-mono text-[11px] md:block">
-      {tags.slice(0, 2).join(' · ')}
-    </span>
-    <span
-      aria-hidden="true"
-      class="text-ink-soft group-hover:text-signal transition-all group-hover:translate-x-1"
-    >
-      →
-    </span>
-  </span>
-</a>
+<a href={`/work/${entry.id}`} class="group border-line hover:border-signal grid grid-cols-[5.5rem_1fr_auto] items-center gap-4 border-b py-5 transition-colors sm:grid-cols-[8rem_1fr_auto] sm:gap-6"><span class="bg-surface aspect-video overflow-hidden rounded-md">{cover && <img src={cover} alt={title+' project visual'} loading="lazy" class="h-full w-full object-contain" />}</span><span class="min-w-0"><span class="font-display text-ink group-hover:text-signal block text-lg">{title}</span><span class="text-ink-soft block text-xs sm:text-sm" data-zh={names[entry.id]||summary}>{summary}</span><span class="text-ink-soft mt-1 hidden font-mono text-[11px] md:block">{tags.slice(0,3).join(' · ')}</span></span><span class="text-ink-soft group-hover:text-signal">→</span></a>
