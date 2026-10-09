@@ -110,3 +110,6 @@
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
+
+/* Show exactly one language per localized project page. */
+html[lang="en"] [data-content-lang="zh"], html[lang="zh"] [data-content-lang="en"] { display:none !important; }

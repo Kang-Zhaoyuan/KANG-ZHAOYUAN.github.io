@@ -5,8 +5,28 @@ import Button from '@/components/Button.astro';
 import WorkRow from '@/components/WorkRow.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import {SITE} from '@/site.config';
-const entries=await getCollection('work',({data})=>!data.draft);
-const order=['flipo-flip','cumcm-2026','cpu-design','xv6-oslabs'];
-const selected=order.map(id=>entries.find(x=>x.id===id)).filter((x):x is typeof entries[number]=>!!x);
+const all=await getCollection('work', ({data})=>!data.draft);
+const ids=['flipo-flip','cumcm-2026','xv6-oslabs'];
+const selected=ids.map(id=>all.find(entry=>entry.id===id)).filter((x):x is typeof all[number]=>!!x);
 ---
-<BaseLayout title={SITE.name}><section class="mx-auto max-w-3xl px-6 pt-16 pb-16 sm:pt-24"><p class="text-ink-soft mb-6 font-mono text-xs" data-zh="哈尔滨工业大学（深圳）">{SITE.status}</p><h1 class="font-display text-ink max-w-2xl text-4xl leading-[1.1] font-medium sm:text-5xl" data-zh="从物理模型到计算机系统。">{SITE.tagline}</h1><p class="text-ink-soft mt-6 max-w-xl" data-zh="哈尔滨工业大学（深圳）本科生，关注数值建模、物理仿真与计算机系统。这里展示我的部分工程与研究项目。">{SITE.description}</p><div class="mt-8 flex flex-wrap gap-3"><Button href="/work">View the work →</Button><Button href="mailto:KangZhaoyuan0723@gmail.com" variant="ghost">Email ↗</Button></div></section><section class="mx-auto max-w-3xl px-6 pb-20"><SectionHeading eyebrow="Selected work" count={selected.length}/>{selected.map(entry=><WorkRow entry={entry}/>)}</section><section class="mx-auto max-w-3xl px-6 pb-20"><SectionHeading eyebrow="Tools & experiments" /><p class="text-ink-soft mb-4" data-zh="小型实用工具、趣味网页实验与个人项目。">Small utilities, playful web experiments, and side projects.</p><a class="text-signal font-mono text-sm" href="/tools">Explore tools →</a></section><section id="contact" class="mx-auto max-w-3xl px-6 pb-24"><SectionHeading eyebrow="Contact"/><a href="mailto:KangZhaoyuan0723@gmail.com" class="text-signal font-mono text-sm">KangZhaoyuan0723@gmail.com</a></section></BaseLayout>
+<BaseLayout title={SITE.name}>
+ <section class="mx-auto max-w-3xl px-6 pt-16 pb-16 sm:pt-24">
+  <p class="text-ink-soft mb-6 font-mono text-xs" data-zh="哈尔滨工业大学（深圳）">{SITE.status}</p>
+  <h1 class="font-display text-ink max-w-2xl text-4xl leading-[1.1] font-medium sm:text-5xl" data-zh="从物理模型到计算机系统。">{SITE.tagline}</h1>
+  <p class="text-ink-soft mt-6 max-w-xl" data-zh="哈尔滨工业大学（深圳）本科生，关注数值建模、物理仿真与计算机系统。这里展示我的工程与研究项目。">{SITE.description}</p>
+  <div class="mt-8 flex flex-wrap gap-3">
+   <Button href="/work"><span data-zh="查看项目 →">View the work →</span></Button>
+   <Button href="mailto:KangZhaoyuan0723@gmail.com" variant="ghost"><span data-zh="联系邮箱 ↗">Email ↗</span></Button>
+  </div>
+ </section>
+ <section class="mx-auto max-w-3xl px-6 pb-20">
+  <SectionHeading eyebrow="Selected work" count={selected.length}/>
+  {selected.map(entry=><WorkRow entry={entry}/>)}
+ </section>
+ <section class="mx-auto max-w-3xl px-6 pb-20">
+  <SectionHeading eyebrow="Tools & experiments" />
+  <p class="text-ink-soft mb-4" data-zh="网页实验、小型工具与粒子几何生成。">Web experiments, small utilities, and geometric particle generation.</p>
+  <a class="text-signal font-mono text-sm" href="/tools"><span data-zh="浏览工具 →">Explore tools →</span></a>
+ </section>
+ <section id="contact" class="mx-auto max-w-3xl px-6 pb-24"><SectionHeading eyebrow="Contact"/><a href="mailto:KangZhaoyuan0723@gmail.com" class="text-signal font-mono text-sm">KangZhaoyuan0723@gmail.com</a></section>
+</BaseLayout>

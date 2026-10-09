@@ -2,8 +2,39 @@
 import ThemeToggle from '@/components/ThemeToggle.astro';
 import {SITE,NAV_LINKS} from '@/site.config';
 const currentPath=Astro.url.pathname;
+const zhNames:Record<string,string>={'Work':'项目','Tools':'工具','About':'关于'};
 ---
-<header class="border-line bg-paper/90 sticky top-0 z-40 border-b backdrop-blur"><div class="mx-auto flex max-w-3xl items-center justify-between gap-3 px-6 py-4"><a href="/" class="font-display text-ink text-lg font-medium">{SITE.name}</a><nav class="flex items-center gap-3 sm:gap-5" aria-label="Primary">{NAV_LINKS.map(link=><a href={link.href} aria-current={currentPath===link.href || currentPath.startsWith(link.href+'/') ? 'page':undefined} class="text-ink-soft hover:text-signal font-mono text-xs uppercase">{link.label}</a>)}<button type="button" data-language-toggle aria-label="Toggle English and Chinese" class="text-ink-soft hover:text-signal border-line rounded-full border px-2 py-1 font-mono text-xs">中文</button><ThemeToggle/></nav></div></header>
+<header class="border-line bg-paper/90 sticky top-0 z-40 border-b backdrop-blur">
+ <div class="mx-auto flex max-w-3xl items-center justify-between gap-3 px-6 py-4">
+  <a href="/" class="font-display text-ink text-lg font-medium">{SITE.name}</a>
+  <nav class="flex items-center gap-3 sm:gap-5" aria-label="Primary">
+   {NAV_LINKS.map(link=><a href={link.href} data-zh={zhNames[link.label]||link.label} aria-current={currentPath===link.href||currentPath.startsWith(link.href+'/')?'page':undefined} class="text-ink-soft hover:text-signal font-mono text-xs uppercase">{link.label}</a>)}
+   <button type="button" data-language-toggle aria-label="Toggle English and Chinese" class="text-ink-soft hover:text-signal border-line rounded-full border px-2 py-1 font-mono text-xs">中文</button>
+   <ThemeToggle/>
+  </nav>
+ </div>
+</header>
 <script is:inline>
-(function(){function change(lang){document.documentElement.lang=lang;document.querySelectorAll('[data-zh]').forEach(function(n){if(!n.dataset.en)n.dataset.en=n.textContent; n.textContent=lang==='zh'?n.dataset.zh:n.dataset.en});document.querySelectorAll('[data-language-toggle]').forEach(function(b){b.textContent=lang==='zh'?'EN':'中文'});try{localStorage.setItem('language',lang)}catch(e){}}function bind(){document.querySelectorAll('[data-language-toggle]').forEach(function(b){if(b.dataset.bound)return;b.dataset.bound='1';b.addEventListener('click',function(){change(document.documentElement.lang==='zh'?'en':'zh')})});let lang='en';try{lang=localStorage.getItem('language')||'en'}catch(e){}change(lang)}document.addEventListener('DOMContentLoaded',bind);document.addEventListener('astro:page-load',bind)})();
+(function(){
+ function change(lang){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-zh]').forEach(function(node){
+   if(!node.hasAttribute('data-en'))node.dataset.en=node.textContent;
+   node.textContent=lang==='zh'?node.dataset.zh:node.dataset.en;
+  });
+  document.querySelectorAll('[data-language-toggle]').forEach(function(button){button.textContent=lang==='zh'?'EN':'中文'});
+  try{localStorage.setItem('language',lang)}catch(error){}
+ }
+ function bind(){
+  document.querySelectorAll('[data-language-toggle]').forEach(function(button){
+   if(button.dataset.bound)return;
+   button.dataset.bound='true';
+   button.addEventListener('click',function(){change(document.documentElement.lang==='zh'?'en':'zh')});
+  });
+  let lang='en';try{lang=localStorage.getItem('language')||'en'}catch(error){}
+  change(lang==='zh'?'zh':'en');
+ }
+ document.addEventListener('DOMContentLoaded',bind);
+ document.addEventListener('astro:page-load',bind);
+})();
 </script>

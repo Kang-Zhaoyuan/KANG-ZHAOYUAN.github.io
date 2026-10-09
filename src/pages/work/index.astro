@@ -3,6 +3,8 @@ import {getCollection} from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import WorkRow from '@/components/WorkRow.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
-const all=await getCollection('work',({data})=>!data.draft);const order=['flipo-flip','cumcm-2026','cpu-design','xv6-oslabs'];const entries=order.map(id=>all.find(e=>e.id===id)).filter((x):x is typeof all[number]=>!!x);
+const all=await getCollection('work',({data})=>!data.draft);
+const order=['flipo-flip','cumcm-2026','xv6-oslabs'];
+const entries=order.map(id=>all.find(e=>e.id===id)).filter((x):x is typeof all[number]=>!!x);
 ---
 <BaseLayout title="Work"><section class="mx-auto max-w-3xl px-6 pt-16 pb-24 sm:pt-24"><SectionHeading eyebrow="Engineering & research" count={entries.length}/>{entries.map(entry=><WorkRow entry={entry}/>)}</section></BaseLayout>
