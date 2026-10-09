@@ -26,7 +26,7 @@ const zh=translation[entry.id];
   <a href="/work" class="text-ink-soft hover:text-signal font-mono text-xs"><span data-zh="← 返回项目列表">← All work</span></a>
   <h1 class="font-display text-ink mt-6 max-w-2xl text-3xl font-medium sm:text-4xl">{title}</h1>
   <p class="text-ink-soft mt-4" data-zh={zh?.summary||summary}>{summary}</p>
-  {cover && <img src={cover} alt={title+' project illustration'} class="bg-surface mt-8 w-full max-h-[520px] rounded-lg object-contain" loading="eager" />}
+  {cover && <img src={cover} alt={title+' project illustration'} class="mt-8 block h-auto w-full" loading="eager" />}
   <dl class="border-line text-ink-soft mt-6 flex flex-wrap gap-x-8 gap-y-2 border-y py-4 font-mono text-xs">
    <div><dt class="inline" data-zh="领域 — ">Focus — </dt><dd class="inline" data-zh={zh?.role||role}>{role}</dd></div>
    <div><dt class="inline" data-zh="技术 — ">Stack — </dt><dd class="inline">{tags.join(', ')}</dd></div>
