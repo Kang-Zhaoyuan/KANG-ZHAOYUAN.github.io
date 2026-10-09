@@ -4,7 +4,7 @@ summary: Experimental mechanics, geometry, and numerical simulation of asymmetri
 role: Physics research and simulation
 date: 2026-08-16
 tags: [Python, MuJoCo, Dynamics, STL]
-cover: /media/flipo-geometry.png
+cover: /media/flipo-snapshot.png
 repo: https://github.com/Kang-Zhaoyuan/Flipo_Flip
 featured: true
 ---
@@ -17,4 +17,4 @@ Flipo Flip explores the motion and energy dissipation of an asymmetric rolling o
 - Support-point geometry, gravitational potential, and energy-loss analysis.
 - Comparison of theoretical trajectories with numerical simulation and experiment.
 
-The figure shows the cross-section geometry used in the analytical model.
+The image shows snapshots from the 3D simulation of a successful 810° rolling trajectory.

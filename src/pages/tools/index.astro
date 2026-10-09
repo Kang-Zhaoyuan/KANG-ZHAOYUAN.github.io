@@ -12,7 +12,7 @@ const items=[
   <SectionHeading eyebrow="Tools & experiments" count={items.length}/>
   <div>{items.map((item,index)=><article class="border-line grid grid-cols-[7rem_1fr] gap-5 border-b py-6 sm:grid-cols-[10rem_1fr]">
     <a href={item.href} class="bg-surface flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg">
-      <img src={item.image} alt={item.alt} loading={index===0?'eager':'lazy'} class:list={['h-full w-full',item.image.endsWith('.svg')?'object-contain p-4':'object-contain']} />
+      <img src={item.image} alt={item.alt} loading={index===0?'eager':'lazy'} class:list={['h-full w-full',item.image.endsWith('.svg')?'object-contain p-4':item.image.includes('spherical-particle')?'object-contain scale-[2.8]':'object-contain']} />
     </a>
     <div class="min-w-0 self-center">
      <h2 class="font-display text-ink text-lg sm:text-xl" data-zh={item.zh}>{item.title}</h2>
