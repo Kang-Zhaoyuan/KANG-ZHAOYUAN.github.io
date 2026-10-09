@@ -1,9 +1,9 @@
 {
-  "name": "portfolio-starter",
+  "name": "kang-zhaoyuan-portfolio",
   "type": "module",
   "version": "1.0.0",
   "private": false,
-  "description": "A minimal, professional portfolio starter for Astro — TypeScript, Tailwind CSS v4, Content Collections, dark mode, and full SEO, with no unnecessary dependencies.",
+  "description": "Bilingual engineering and research portfolio for Zhaoyuan Kang.",
   "keywords": [
     "astro",
     "astro-theme",
@@ -14,12 +14,12 @@
     "starter"
   ],
   "license": "MIT",
-  "author": "Bracozs",
+  "author": "Zhaoyuan Kang",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/portfolio-starter"
+    "url": "https://github.com/Kang-Zhaoyuan/KANG-ZHAOYUAN.github.io"
   },
-  "homepage": "https://github.com/your-username/portfolio-starter",
+  "homepage": "https://kang-zhaoyuan.github.io",
   "engines": {
     "node": ">=22.0.0"
   },
