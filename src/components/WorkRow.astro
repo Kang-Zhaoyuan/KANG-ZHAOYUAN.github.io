@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props {entry: CollectionEntry<'work'>}
+const {entry}=Astro.props;
+const {title,summary,tags}=entry.data;
+const zhSummaries:Record<string,string>={
+ 'flipo-flip':'结合实验与仿真研究非对称翻滚动力学。',
+ 'cumcm-2026':'多孔介质干燥的热质耦合建模与有限体积数值求解。',
+ 'xv6-oslabs':'xv6-riscv 操作系统实验与学习笔记。'
+};
+---
+<a href={`/work/${entry.id}`} class="group border-line hover:border-signal flex items-center justify-between gap-5 border-b py-6 transition-colors">
+ <span class="min-w-0">
+  <span class="font-display text-ink group-hover:text-signal block text-xl transition-colors">{title}</span>
+  <span class="text-ink-soft mt-1 block text-sm" data-zh={zhSummaries[entry.id] || summary}>{summary}</span>
+  <span class="text-ink-soft mt-2 block font-mono text-[11px]">{tags.slice(0,3).join(' · ')}</span>
+ </span>
+ <span aria-hidden="true" class="text-ink-soft group-hover:text-signal shrink-0">→</span>
+</a>

@@ -1,0 +1,14 @@
+---
+import {SITE} from '@/site.config';
+const year=new Date().getFullYear();
+---
+<footer class="border-line border-t">
+ <div class="text-ink-soft mx-auto flex max-w-3xl flex-col gap-4 px-6 py-8 font-mono text-xs sm:flex-row sm:justify-between">
+  <p>© {year} {SITE.name}. <span data-zh="模板作者：">Template by </span><a href="https://github.com/BracoZS/astro-starter-portfolio" class="hover:text-signal">BracoZS</a></p>
+  <nav class="flex gap-4">
+   <a href="https://github.com/Kang-Zhaoyuan" class="hover:text-signal">GitHub</a>
+   <a href="/tools" class="hover:text-signal" data-zh="工具">Tools</a>
+   <a href="#top" class="hover:text-signal" data-zh="顶部 ↑">Top ↑</a>
+  </nav>
+ </div>
+</footer>

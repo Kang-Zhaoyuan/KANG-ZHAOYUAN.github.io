@@ -1,62 +1,12 @@
-# 是你奶奶！！！
+# Zhaoyuan Kang
 
-<div style="display:flex; gap:12px; align-items:center; justify-content:center; margin-bottom:12px;">
-  <img src="Is_your_granny_1.gif" alt="granny-left" style="width:320px; height:320px; object-fit:cover;" />
-  <img src="Is_your_granny.gif" alt="granny-right" style="width:320px; height:320px; object-fit:cover;" />
-</div>
+Personal website in English and Chinese. Built with [Astro](https://astro.build/) and the [BracoZS portfolio template](https://github.com/BracoZS/astro-starter-portfolio).
 
-## 项目简介
+## Sections
+- Work: Flipo Flip, CUMCM 2026, xv6 OS Labs.
+- Notes: xv6 lab notes.
+- Tools: Granny Translator, NetEase Album Exporter, Spherical Harmonic Particle Generator.
 
-这是一个网页级的加密/解密演示工具，主题采用“是 / 你 / 奶奶 / ！”四符号表，用户可以在页面上输入任意文本并进行加密或解密。项目兼具趣味性与技术示例价值，适合用来学习文本编码、BigInt 运算与自定义符号映射。
+The translator is hosted at `/translator/`.
 
-## 功能概览
-
-- 页面 UI：左侧为“用户输入”文本区，右侧为“输出结果”文本区，页面包含“加密”和“解密”两个按钮。
-- 加密流程（`cipher.js`）：
-  1. 使用 `TextEncoder` 将输入字符串编码为 UTF‑8 字节数组；
-  2. 把字节序列视为一个大整数 D（按大端顺序累乘 256 并加上字节值）；
-  3. 将 D 转换为 base‑4（四进制）表示，每位 0–3 映射为符号 `是, 你, 奶奶, ！`，拼接得到密文。
-- 解密流程（`cipher.js`）：
-  1. 解析密文中的符号序列（优先匹配多字符符号 `奶奶` 以避免歧义），得到 0–3 的数值序列；
-  2. 按位累乘 base‑4 得到大整数 D；
-  3. 把 D 拆分为 base‑256 字节数组并用 `TextDecoder('utf-8')` 解码回明文。
-- 复制功能：输出框右上有灰底黑字的 `Copy` 按钮，点击时按钮会轻微震动，并在屏幕中央短暂显示黑底白字提示（复制成功/失败）。
-- 可视样式：页面使用淡粉色背景和浅粉色文本框，按钮与提示样式便于演示与调试。
-
-## 文件结构
-
-- `index.html`：页面结构与内联样式，提供输入/输出和交互按钮。
-- `cipher.js`：核心加密/解密实现与剪贴板复制逻辑。
-- `get_date.js`（可选）：如果使用，负责从新闻 API 获取“今天的日期”、定期刷新以及失败回退到本地时间的逻辑。
-
-## UI 与交互
-
-- 按钮布局：
-  - 输出区右上有 **Copy** 按钮（灰底黑字），用于把输出复制到剪贴板；
-  - 输入区右上有 **Paste** 与 **Clear** 两个按钮（灰底黑字），分别用于从剪贴板粘贴和清空输入框；
-  - 所有三个按钮在视觉上位于对应 `textarea` 的内部右上角，位置通过 JavaScript 动态计算并在页面加载与窗口大小变化时调整，以保证按钮不会超出文本框边界。
-- 动画与反馈：
-  - 点击任一按钮时会有轻微的“震动”动画（类名 `shake`），同时在屏幕中央短暂显示黑底白字的提示（约 1.6 秒），用于反馈成功或失败（例如 “Successfully copied to clipboard”）。
-  - 复制/粘贴操作优先使用 `navigator.clipboard` API，若不支持则回退到兼容方法并显示相应提示。
-- 可及性与降级：
-  - Toast 使用 `role="status"` 作为提示；在不支持剪贴板 API 的环境下，界面会通过提示指导用户使用键盘快捷键（例如在输入框内按 Ctrl/Cmd+V）。
-- 调试小贴士：
-  - 在开发时可观察控制台的错误信息（copy/paste 失败、定位计算错误等），`cipher.js` 中包含位置计算函数 `positionButtonsInsideTextareas()`，可以在控制台手动调用以重算位置。
-
-
-## 注意事项与安全声明
-
-- 本项目为演示用途，所用方法并非加密安全实践（无密钥管理、无认证）。
-- 该算法适合作为学习与趣味演示；不要用于敏感或生产级数据。
-
-## 本地运行
-
-1. 克隆仓库：
-   ```bash
-   git clone git@github.com:KANG-ZHAOYUAN/KANG-ZHAOYUAN.github.io.git
-   ```
-2. 本地预览：直接打开 `index.html`，或使用简单静态服务器，例如：
-   ```bash
-   python -m http.server 8000
-   # 访问 http://localhost:8000
-   ```
+License: original Astro template under MIT; project assets retain their respective licenses.

@@ -1,0 +1,11 @@
+---
+interface Props {eyebrow:string;count?:number}
+const {eyebrow,count}=Astro.props;
+const zh:Record<string,string>={
+ 'Selected work':'精选项目','Engineering & research':'工程与研究','Tools & experiments':'工具与实验','Contact':'联系方式','About':'关于我','Learning notes':'学习日志','Study notes':'学习日志'
+};
+---
+<div class="border-line mb-8 flex items-baseline justify-between border-b pb-3">
+ <h2 class="text-ink-soft font-mono text-xs tracking-[0.2em] uppercase" data-zh={zh[eyebrow]||eyebrow}>{eyebrow}</h2>
+ {typeof count==='number' && <span class="text-ink-soft font-mono text-xs">({String(count).padStart(2,'0')})</span>}
+</div>

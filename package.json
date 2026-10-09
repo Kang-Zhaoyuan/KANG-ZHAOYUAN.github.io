@@ -1,0 +1,45 @@
+{
+  "name": "kang-zhaoyuan-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Bilingual engineering and research portfolio for Zhaoyuan Kang.",
+  "keywords": [
+    "astro",
+    "astro-theme",
+    "astro-template",
+    "portfolio",
+    "tailwindcss",
+    "typescript",
+    "starter"
+  ],
+  "license": "MIT",
+  "author": "Zhaoyuan Kang",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kang-Zhaoyuan/KANG-ZHAOYUAN.github.io"
+  },
+  "homepage": "https://kang-zhaoyuan.github.io",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "node scripts/fetch-poster.mjs && astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
+  }
+}
