@@ -61,8 +61,8 @@ async function capture(browser,port,c,kind) {
     await page.locator('#decryptButton').click();
     const decoded=await page.locator('#outputDisplay').inputValue();
     if(decoded!=='Hello 123')throw new Error('Translator decode failed: '+decoded);
-    await page.locator('#userInput').fill('');
-    await page.locator('#outputDisplay').evaluate(el=>el.value='');
+    await page.reload({waitUntil:'networkidle'});
+    await page.evaluate(()=>document.fonts.ready);
   }
   const dir='audit/screenshots';
   const slug=c.route==='/'?'home':c.route.replace(/^\//,'').replace(/\/$/,'').replaceAll('/','_');
