@@ -1,8 +1,6 @@
 name: Portfolio build check
 on:
   pull_request:
-  push:
-    branches: [feat/astro-bilingual-portfolio]
 jobs:
   check:
     runs-on: ubuntu-latest

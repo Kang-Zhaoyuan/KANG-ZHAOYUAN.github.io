@@ -1,24 +1,17 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
-/* Make the `dark:` variant respond to a `.dark` class instead of OS
-   preference, so the toggle in <ThemeToggle /> can override the system. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ---------------------------------------------------------------------
-   Design tokens (light values). Edit these five colors to re-skin the
-   entire site — every component reads from the tokens below, nothing
-   hardcodes a hex value.
-   --------------------------------------------------------------------- */
 :root {
   color-scheme: light;
 
-  --paper: #f7f6f3; /* page background */
-  --ink: #15161b; /* primary text */
-  --ink-soft: #5b5d66; /* secondary text */
-  --signal: #3d3dff; /* the one accent color */
-  --line: #e4e2dc; /* borders, rules */
-  --surface: #efeeea; /* cards, raised panels */
+  --paper: #f7f6f3; 
+  --ink: #15161b; 
+  --ink-soft: #5b5d66; 
+  --signal: #3d3dff; 
+  --line: #e4e2dc; 
+  --surface: #efeeea; 
 }
 
 .dark {
@@ -32,9 +25,6 @@
   --surface: #1a1b20;
 }
 
-/* `inline` keeps these resolving against the live --paper/--ink/etc custom
-   properties above at runtime, instead of Tailwind inlining a static value
-   at build time — required for the .dark class swap to work. */
 @theme inline {
   --color-paper: var(--paper);
   --color-ink: var(--ink);
@@ -43,9 +33,7 @@
   --color-line: var(--line);
   --color-surface: var(--surface);
 
-  /* Astro's Fonts API exposes the loaded families on --ff-* (see
-     astro.config.mjs). These map them to font-display / font-body /
-     font-mono utility classes. */
+  
   --font-display: var(--ff-display);
   --font-body: var(--ff-body);
   --font-mono: var(--ff-mono);
@@ -90,8 +78,6 @@
   }
 }
 
-/* Tune @tailwindcss/typography to use the site's tokens instead of its
-   default gray scale, so rendered Markdown matches the rest of the page. */
 .prose {
   --tw-prose-body: var(--color-ink-soft);
   --tw-prose-headings: var(--color-ink);
@@ -111,5 +97,4 @@
   text-underline-offset: 3px;
 }
 
-/* Show exactly one language per localized project page. */
 html[lang="en"] [data-content-lang="zh"], html[lang="zh"] [data-content-lang="en"] { display:none !important; }
