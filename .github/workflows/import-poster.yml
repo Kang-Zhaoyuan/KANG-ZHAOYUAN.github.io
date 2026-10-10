@@ -1,0 +1,24 @@
+name: Import project poster
+on:
+  push:
+    branches: [chore/local-flipo-poster]
+permissions:
+  contents: write
+jobs:
+  import:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and verify image
+        run: |
+          mkdir -p public/media
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/Kang-Zhaoyuan/Flipo_Flip/main/03_%E7%AD%94%E8%BE%A9%E4%B8%8E%E6%B1%87%E6%8A%A5/v2_%E7%AD%94%E8%BE%A9%E4%B8%8E%E6%B1%87%E6%8A%A5/References_On_PPT_Making/Experiment_PPT_Figures/Video_Tracking_Poster.png' -o public/media/flipo-poster.png
+          test "$(git hash-object public/media/flipo-poster.png)" = 'ce77d7103c116c312ae773eef5083728f201ca1a'
+      - name: Commit image
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/media/flipo-poster.png
+          git commit -m "assets: store Flipo poster in repository"
+          git push origin HEAD:chore/local-flipo-poster
