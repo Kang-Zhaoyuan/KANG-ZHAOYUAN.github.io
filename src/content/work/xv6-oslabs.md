@@ -2,7 +2,6 @@
 title: xv6 OS Labs
 summary: Operating systems exercises and study notes based on xv6-riscv.
 role: Operating systems and systems programming
-date: 2026-09-25
 tags: [C, xv6, RISC-V, QEMU]
 repo: https://github.com/Kang-Zhaoyuan/xv6-oslabs-hitsz
 ---

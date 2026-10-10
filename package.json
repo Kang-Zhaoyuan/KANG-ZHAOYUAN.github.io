@@ -6,12 +6,7 @@
   "description": "Bilingual engineering and research portfolio for Zhaoyuan Kang.",
   "keywords": [
     "astro",
-    "astro-theme",
-    "astro-template",
-    "portfolio",
-    "tailwindcss",
-    "typescript",
-    "starter"
+    "portfolio"
   ],
   "license": "MIT",
   "author": "Zhaoyuan Kang",
