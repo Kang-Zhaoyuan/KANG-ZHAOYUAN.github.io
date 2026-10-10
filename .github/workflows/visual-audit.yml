@@ -1,0 +1,43 @@
+name: Temporary visual regression audit
+on:
+  push:
+    branches: [chore/site-slim]
+permissions:
+  contents: read
+jobs:
+  visual-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: baseline
+      - uses: actions/checkout@v4
+        with:
+          ref: chore/site-slim
+          path: candidate
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build before and after
+        run: |
+          cd baseline && pnpm install --frozen-lockfile && pnpm build
+          cd ../candidate && pnpm install --frozen-lockfile && pnpm build
+      - name: Prepare browser and servers
+        run: |
+          npm install --prefix /tmp/site-audit --no-audit --no-fund playwright-core pngjs
+          command -v google-chrome
+          (cd baseline && pnpm exec astro preview --host 127.0.0.1 --port 4321 > /tmp/baseline-server.log 2>&1) &
+          (cd candidate && pnpm exec astro preview --host 127.0.0.1 --port 4322 > /tmp/candidate-server.log 2>&1) &
+      - name: Browser screenshots and regression checks
+        run: node candidate/scripts/visual-regression.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: audit-screenshots
+          path: audit/screenshots
+          retention-days: 7
