@@ -75,7 +75,10 @@ function base4CipherToBigInt(ciphertext) {
 
         if (value === undefined) {
             // 🚨 遇到非法字符，抛出异常或返回错误信息
-            throw new Error(`解密失败：密文中包含非法符号在位置 ${i}`);
+            const err = getCurrentLang() === 'zh'
+                ? `解密失败：密文中包含非法符号在位置 ${i}`
+                : `Decryption failed: invalid symbol at index ${i}`;
+            throw new Error(err);
         }
 
         // D = D * BASE + value
@@ -125,7 +128,8 @@ function handleEncrypt() {
         output.value = bigIntToBase4Cipher(number);
 
     } catch (e) {
-        document.getElementById('outputDisplay').value = "加密出错：" + e.message;
+        const prefix = getCurrentLang() === 'zh' ? "加密出错：" : "Encryption error: ";
+        document.getElementById('outputDisplay').value = prefix + e.message;
         console.error("加密错误:", e);
     }
 }
@@ -183,22 +187,7 @@ function handleDecrypt() {
  */
 function copyOutput() {
     const output = document.getElementById('outputDisplay');
-    const button = document.getElementById('copyButton');
-    const toast = document.getElementById('copyToast');
     const text = output ? output.value : '';
-
-    const doShake = () => {
-        if (!button) return;
-        button.classList.add('shake');
-        setTimeout(() => button.classList.remove('shake'), 400);
-    };
-
-    const showToast = (msg) => {
-        if (!toast) return;
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 1600);
-    };
 
     const copyPromise = (navigator.clipboard && navigator.clipboard.writeText)
         ? navigator.clipboard.writeText(text)
@@ -210,7 +199,7 @@ function copyOutput() {
                 ta.style.left = '-9999px';
                 document.body.appendChild(ta);
                 ta.select();
-                document.execCommand('copy');
+                /** @type {any} */ (document).execCommand('copy');
                 document.body.removeChild(ta);
                 resolve();
             } catch (e) {
@@ -220,10 +209,10 @@ function copyOutput() {
 
     copyPromise.then(() => {
         doShakeButtonById('copyButton');
-        showToastMsg('Successfully copied to clipboard');
+        showToastMsg(getCurrentLang() === 'zh' ? '已成功复制到剪贴板' : 'Successfully copied to clipboard');
     }).catch((e) => {
         console.error('Copy failed', e);
-        showToastMsg('Copy failed');
+        showToastMsg(getCurrentLang() === 'zh' ? '复制失败' : 'Copy failed');
     });
 }
 
@@ -259,17 +248,17 @@ async function pasteInput() {
                 input.focus();
                 input.selectionStart = input.selectionEnd = start + text.length;
                 doShakeButtonById('pasteButton');
-                showToastMsg('Pasted from clipboard');
+                showToastMsg(getCurrentLang() === 'zh' ? '已从剪贴板粘贴' : 'Pasted from clipboard');
             } else {
                 doShakeButtonById('pasteButton');
-                showToastMsg('Clipboard empty');
+                showToastMsg(getCurrentLang() === 'zh' ? '剪贴板为空' : 'Clipboard empty');
             }
         } else {
-            showToastMsg('Paste not supported; press Ctrl/Cmd+V inside the input');
+            showToastMsg(getCurrentLang() === 'zh' ? '不支持自动粘贴，请按 Ctrl/Cmd+V' : 'Paste not supported; press Ctrl/Cmd+V inside the input');
         }
     } catch (e) {
         console.error('Paste failed', e);
-        showToastMsg('Paste failed');
+        showToastMsg(getCurrentLang() === 'zh' ? '粘贴失败' : 'Paste failed');
     }
 }
 
@@ -279,7 +268,7 @@ function clearInput() {
     if (!input) return;
     input.value = '';
     doShakeButtonById('clearButton');
-    showToastMsg('Cleared input');
+    showToastMsg(getCurrentLang() === 'zh' ? '已清空输入' : 'Cleared input');
 }
 
 // 动态计算并设置按钮位置（确保按钮完全位于对应的 textarea 内部）
@@ -292,7 +281,7 @@ function positionButtonsInsideTextareas() {
         if (outWrapper && outTA && copyBtn) {
             const top = outTA.offsetTop + 8; // 文字框内靠下偏移
             const right = Math.max(8, outWrapper.clientWidth - (outTA.offsetLeft + outTA.clientWidth) + 12);
-            const SHIFT_RIGHT = -8; // 向右微调（负值会使按钮靠右）
+            const SHIFT_RIGHT = 4; // 向左微调，避免紧贴圆角
             copyBtn.style.top = `${top}px`;
             copyBtn.style.right = `${right + SHIFT_RIGHT}px`;
 
@@ -314,9 +303,9 @@ function positionButtonsInsideTextareas() {
             const top = inTA.offsetTop + 8;
             const rightBase = Math.max(8, inWrapper.clientWidth - (inTA.offsetLeft + inTA.clientWidth) + 12);
 
-            // 将 clear 放在最右 (靠近 textarea 右上角)，paste 在其左侧，保留间隙
+            // 将 clear 放在右侧，paste 在其左侧，保留间隙，整体向左微调
             const gap = 8;
-            const SHIFT_RIGHT_INPUT = -12; // 向右微调输入区域按钮（负值使按钮靠右）
+            const SHIFT_RIGHT_INPUT = 4; // 正值使按钮向左偏移，留出舒适间距
             const clearRight = rightBase + SHIFT_RIGHT_INPUT;
             const pasteRight = clearRight + clearBtn.offsetWidth + gap;
 
@@ -351,4 +340,63 @@ const observeButtons = ['copyButton', 'pasteButton', 'clearButton'];
 observeButtons.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('transitionend', positionButtonsInsideTextareas);
+});
+
+// =========================================================================
+// 国际化 (i18n) 语言支持（同步主站 language 设置）
+// =========================================================================
+
+function getCurrentLang() {
+    try {
+        const stored = localStorage.getItem('language');
+        if (stored === 'zh' || stored === 'en') return stored;
+    } catch (e) {}
+    return 'en';
+}
+
+function setLanguage(lang) {
+    try {
+        localStorage.setItem('language', lang);
+    } catch (e) {}
+
+    document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en';
+
+    // 页面标题
+    document.title = (lang === 'zh') ? '是你奶奶！' : 'Granny Translator';
+
+    // 文本内容切换 (匹配 data-zh)
+    document.querySelectorAll('[data-zh]').forEach(el => {
+        if (!el.hasAttribute('data-en')) el.dataset.en = el.textContent || '';
+        el.textContent = (lang === 'zh') ? el.dataset.zh : el.dataset.en;
+    });
+
+    // placeholder 属性切换 (匹配 data-placeholder-zh)
+    document.querySelectorAll('[data-placeholder-zh]').forEach(el => {
+        if (!el.hasAttribute('data-placeholder-en')) {
+            el.dataset.placeholderEn = el.getAttribute('placeholder') || '';
+        }
+        el.setAttribute('placeholder', (lang === 'zh') ? el.dataset.placeholderZh : el.dataset.placeholderEn);
+    });
+
+    // 切换按钮自身文字
+    const langBtn = document.getElementById('langToggle');
+    if (langBtn) {
+        langBtn.textContent = (lang === 'zh') ? 'EN' : '中文';
+        langBtn.title = (lang === 'zh') ? 'Switch to English' : '切换为中文';
+    }
+
+    // 重新校准输入框内按钮位置
+    setTimeout(positionButtonsInsideTextareas, 40);
+}
+
+function toggleLanguage() {
+    const nextLang = (getCurrentLang() === 'zh') ? 'en' : 'zh';
+    setLanguage(nextLang);
+}
+
+// 脚本加载即刻初始化，并在 DOM 完全挂载时复验
+setLanguage(getCurrentLang());
+window.addEventListener('DOMContentLoaded', () => {
+    setLanguage(getCurrentLang());
+    setTimeout(positionButtonsInsideTextareas, 50);
 });

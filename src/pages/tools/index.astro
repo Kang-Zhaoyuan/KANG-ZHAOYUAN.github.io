@@ -10,15 +10,28 @@ const items=[
 <BaseLayout title="Tools">
  <section class="mx-auto max-w-3xl px-6 pt-16 pb-24 sm:pt-24">
   <SectionHeading eyebrow="Tools & experiments" count={items.length}/>
-  <div>{items.map((item,index)=><article class="border-line grid grid-cols-[7rem_1fr] gap-5 border-b py-6 sm:grid-cols-[10rem_1fr]">
-    <a href={item.href} class="block aspect-[4/3] overflow-hidden">
-      <img src={item.image} alt={item.alt} loading={index===0?'eager':'lazy'} class:list={['block h-full w-full object-cover object-center',item.image.endsWith('.svg')?'scale-[1.25]':item.image.includes('spherical-particle')?'scale-[4.2]':'']} />
-    </a>
-    <div class="min-w-0 self-center">
-     <h2 class="font-display text-ink text-lg sm:text-xl" data-zh={item.zh}>{item.title}</h2>
-     <p class="text-ink-soft mt-2 text-sm" data-zh={item.cn}>{item.en}</p>
-     <a class="text-signal mt-3 inline-block font-mono text-xs" href={item.href}><span data-zh={item.ctaZh}>{item.cta}</span></a>
-    </div>
-  </article>)}</div>
+  <div>{items.map((item,index)=>{
+    const isExternal = item.href.startsWith('http');
+    const isStaticApp = item.href.startsWith('/translator');
+    const linkProps = {
+      href: item.href,
+      ...(isStaticApp ? { 'data-astro-reload': '' } : {}),
+      ...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})
+    };
+    return (
+      <article class="border-line grid grid-cols-[7rem_1fr] gap-5 border-b py-6 sm:grid-cols-[10rem_1fr]">
+        <a {...linkProps} class="group block aspect-[4/3] overflow-hidden">
+          <img src={item.image} alt={item.alt} loading={index===0?'eager':'lazy'} class:list={['block h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105',item.image.endsWith('.svg')?'scale-[1.25] group-hover:scale-[1.3]':item.image.includes('spherical-particle')?'scale-[4.2] group-hover:scale-[4.4]':'']} />
+        </a>
+        <div class="min-w-0 self-center">
+         <h2 class="font-display text-lg sm:text-xl">
+           <a {...linkProps} class="text-ink hover:text-signal transition-colors" data-zh={item.zh}>{item.title}</a>
+         </h2>
+         <p class="text-ink-soft mt-2 text-sm" data-zh={item.cn}>{item.en}</p>
+         <a {...linkProps} class="text-signal hover:underline mt-3 inline-block font-mono text-xs"><span data-zh={item.ctaZh}>{item.cta}</span></a>
+        </div>
+      </article>
+    );
+  })}</div>
  </section>
 </BaseLayout>
