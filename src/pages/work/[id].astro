@@ -1,5 +1,5 @@
 ---
-import {getCollection,render,type CollectionEntry} from 'astro:content';
+import {getCollection,getEntry,render,type CollectionEntry} from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Button from '@/components/Button.astro';
 export async function getStaticPaths(){
@@ -8,7 +8,10 @@ export async function getStaticPaths(){
  return entries.map(entry=>({params:{id:entry.id},props:{entry,zhEntry:zh.find(x=>x.id===entry.id)}}));
 }
 interface Props{entry:CollectionEntry<'work'>;zhEntry?:CollectionEntry<'workZh'>}
-const {entry,zhEntry}=Astro.props;
+const {id}=Astro.params;
+const entry=(id ? await getEntry('work', id) : null) ?? Astro.props.entry;
+const zhEntry=(id ? await getEntry('workZh', id) : null) ?? Astro.props.zhEntry;
+if (!entry) throw new Error(`Work entry not found: ${id}`);
 const {title,summary,role,tags,url,repo,cover}=entry.data;
 const english=await render(entry);
 const chinese=zhEntry?await render(zhEntry):null;
@@ -16,8 +19,9 @@ const EnContent=english.Content;
 const ZhContent=chinese?.Content;
 const translation:Record<string,{summary:string,role:string}>={
  'flipo-flip':{summary:'结合实验、几何建模与仿真研究非对称翻滚动力学。',role:'研究与仿真'},
+ 'chinese-report-polishing':{summary:'专为理工科实验报告打造的中文写作去 AI 味 Agent Skill 与自动化审改工作流。',role:'Agent 工作流与技术写作'},
  'cumcm-2026':{summary:'利用有限体积法研究多孔介质干燥的热质耦合传输。',role:'数学建模与数值计算'},
- 'xv6-oslabs':{summary:'基于 xv6-riscv 的操作系统实验与学习笔记。',role:'操作系统实验'}
+ 'course-labs':{summary:'本科核心课程实验合集，涵盖 CSAPP 与 xv6 操作系统等。',role:'课程实验与系统编程'}
 };
 const zh=translation[entry.id];
 ---

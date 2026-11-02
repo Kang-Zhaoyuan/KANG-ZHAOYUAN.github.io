@@ -5,8 +5,9 @@ const {entry}=Astro.props;
 const {title,summary,tags}=entry.data;
 const zhSummaries:Record<string,string>={
  'flipo-flip':'结合实验与仿真研究非对称翻滚动力学。',
+ 'chinese-report-polishing':'面向理工科实验报告的中文写作去 AI 味 Skill。',
  'cumcm-2026':'多孔介质干燥的热质耦合建模与有限体积数值求解。',
- 'xv6-oslabs':'xv6-riscv 操作系统实验与学习笔记。'
+ 'course-labs':'涵盖 CSAPP 与 xv6-riscv 操作系统的本科课程实验。'
 };
 ---
 <a href={`/work/${entry.id}`} class="group border-line hover:border-signal flex items-center justify-between gap-5 border-b py-6 transition-colors">
